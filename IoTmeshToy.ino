@@ -92,7 +92,7 @@ void yerpCb( void *arg ) {
   // send ping to webSockets
   String ping("ping");
   broadcastWsMessage(ping.c_str(), ping.length(), OPCODE_TEXT);
-  //sendWsControl();
+  sendWsControl();
 }
 
 void newConnectionCallback( bool adopt ) {
