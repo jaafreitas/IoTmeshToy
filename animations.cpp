@@ -12,27 +12,37 @@ AnimationController controllers[ANIMATION_COUNT];
 
 extern easyMesh mesh;
 
+void RGBSetPixelColor(RgbColor color) {
+  // Common anode RGB LED.
+  if ((color.R > 0) || (color.G > 0) || (color.B > 0)) {
+    analogWrite(ledPinR, map(color.R, 0, 255, 255, 0));
+    analogWrite(ledPinG, map(color.G, 0, 255, 255, 0));
+    analogWrite(ledPinB, map(color.B, 0, 255, 255, 0));
+  }
+}
+
 void animationsInit() {
   animations.StartAnimation(turnOnIdx, 3000, turnOn);
-  controllers[turnOnIdx].dimmer = 0.1f;  // controls overall brightness 0-1f
+  controllers[turnOnIdx].dimmer = 0.5f;  // controls overall brightness 0-1f
   controllers[turnOnIdx].width = 3.0f; // width of the blip
   controllers[turnOnIdx].nextAnimation = searchingIdx;  // run once and then run search
 
   animations.StartAnimation(searchingIdx, 1000, searchingBlip);
   animations.StopAnimation(searchingIdx);
-  controllers[searchingIdx].dimmer = 0.15f;  // controls overall brightness 0-1f
+  controllers[searchingIdx].dimmer = 0.25f;  // controls overall brightness 0-1f
   controllers[searchingIdx].width = 2.0f; // width of the blip
   controllers[searchingIdx].hue[0] = 0.0f; // color of the blip
   controllers[searchingIdx].nextAnimation = searchingIdx;  // run itself over and over until this changes.
 
   animations.StartAnimation(smoothIdx, 2000, smoothBlip);
   animations.StopAnimation(smoothIdx);
-  controllers[smoothIdx].dimmer = 0.1f;  // controls overall brightness 0-1f
+  controllers[smoothIdx].dimmer = 0.5f;  // controls overall brightness 0-1f
   controllers[smoothIdx].width = 2.5f; // width of the blip
 
-  controllers[smoothIdx].hue[0] = 0.22f; // color of the blip
-  controllers[smoothIdx].hue[1] = 0.44f; // color of the blip
-  controllers[smoothIdx].hue[2] = 0.66f; // color of the blip
+  controllers[smoothIdx].hue[0] = 0.20f; // color of the blip
+  controllers[smoothIdx].hue[1] = 0.40f; // color of the blip
+  controllers[smoothIdx].hue[2] = 0.60f; // color of the blip
+  controllers[smoothIdx].hue[2] = 0.80f; // color of the blip
 
   controllers[smoothIdx].offset = 0.0f;  // relative offset of this blip
   controllers[smoothIdx].direction = true; // true == clockwise, false == counterclockwise
@@ -72,10 +82,14 @@ void turnOn(const AnimationParam& param) {
     while ( hue > 1) //kluge to get around lack of functioning fmod
       hue -= 1;
 
+    lightness = 0.5f;
     RgbColor color = HslColor( hue, 1.0f, lightness);
 
     strip.SetPixelColor( index, colorGamma.Correct(color));
-  }
+    if (index == 0) {
+      RGBSetPixelColor(color);
+    }
+  }  
 }
 
 void searchingBlip(const AnimationParam& param) {
@@ -93,8 +107,13 @@ void searchingBlip(const AnimationParam& param) {
     blipPos = abs( previousGoal + ( currentGoal - previousGoal ) * param.progress / movementDuration );
   else
     blipPos = (float)currentGoal;
-
-  placeBlip( blipPos, controllers + param.index, 0 );
+    
+  controllers[param.index].hue[0] += 0.0001f;
+  if (controllers[param.index].hue[0] > 1.0f) {
+    controllers[param.index].hue[0] = 0.0f;
+  }
+  blipPos = 0;
+  placeBlip( blipPos, controllers + param.index, controllers[param.index].hue[0] );
 }
 
 void smoothBlip(const AnimationParam& param) {
@@ -159,6 +178,9 @@ void placeBlip(float& blipPos, AnimationController* controller, uint8_t hueIdx) 
       lightness *= controller->dimmer;
       RgbColor color = HslColor( controller->hue[hueIdx], 1.0f, lightness);
       strip.SetPixelColor( index, colorGamma.Correct(color));
+      if (index == 0) {
+        RGBSetPixelColor(color);
+      }
     }
   }
 }
@@ -168,6 +190,9 @@ void allDark( void ) {
 
   for (uint8_t index = 0 ; index < strip.PixelCount(); index++) {
     strip.SetPixelColor( index, colorGamma.Correct(color));
+    if (index == 0) {
+      RGBSetPixelColor(color);
+    }
   }
 }
 
