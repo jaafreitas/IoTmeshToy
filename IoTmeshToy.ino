@@ -164,9 +164,9 @@ String buildControl ( void ) {
   uint16_t blips = mesh.connectionCount() + 1;
   mesh.debugMsg( APPLICATION, "buildControl(): blips=%d\n", blips);
 
-  if ( blips > 3 ) {
+  if ( blips > MAX_BLIPS ) {
     mesh.debugMsg( APPLICATION, " blips out of range =%d\n", blips);
-    blips = 3;
+    blips = MAX_BLIPS;
   }
 
   StaticJsonBuffer<200> jsonBuffer;
