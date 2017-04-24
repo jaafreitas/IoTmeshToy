@@ -11,24 +11,23 @@
 
 // globals
 easyMesh  mesh;  // mesh global
-extern NeoPixelBus<NeoGrbFeature, NeoEsp8266Uart800KbpsMethod> strip;  // using the method that works for sparkfun thing
 extern NeoPixelAnimator animations; // NeoPixel animation management object
 extern AnimationController controllers[]; // array of add-on controllers for my animations
 os_timer_t  yerpTimer;
 
 void setup() {
   Serial.begin( 115200 );
-  
+
   // Let's limit the analogWrite range to 255, so RGB values will make more sense.
   analogWriteRange(255);
-  
+
   pinMode(ledPinR, OUTPUT);
   pinMode(ledPinG, OUTPUT);
   pinMode(ledPinB, OUTPUT);
   digitalWrite(ledPinR, HIGH);
   digitalWrite(ledPinG, HIGH);
-  digitalWrite(ledPinB, HIGH);  
-  
+  digitalWrite(ledPinB, HIGH);
+
   // setup mesh
 //  mesh.setDebugMsgTypes( ERROR | MESH_STATUS | CONNECTION | SYNC | COMMUNICATION | GENERAL | MSG_TYPES | REMOTE | APPLICATION ); // all types on
   mesh.setDebugMsgTypes( ERROR | STARTUP | APPLICATION );  // set before init() so that you can see startup messages
@@ -45,9 +44,6 @@ void setup() {
   webSocketSetConnectionCallback( &wsConnectionCallback );
 
   mesh.debugMsg( STARTUP, "\nIn setup() my chipId=%d\n", mesh.getChipId());
-
-  strip.Begin();
-  strip.Show();
 
   animationsInit();
 
@@ -81,7 +77,6 @@ void loop() {
   }
 
   animations.UpdateAnimations();
-  strip.Show();
 }
 
 void yerpCb( void *arg ) {
