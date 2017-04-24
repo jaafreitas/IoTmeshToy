@@ -196,9 +196,6 @@ function checkAlive() {
 
 function startWebSocket() {
     ws = new WebSocket(socketStr);
-    //ws = new WebSocket('ws://192.168.107.1:2222/');
-    //ws = new WebSocket('ws://192.168.10.1:2222/');
-    // ws = new WebSocket('ws://192.168.167.1:2222/');
 
     ws.onmessage = function (event) {onMessageFunction(event); };
     ws.onopen = function (event) {onOpenFunction(event); };
