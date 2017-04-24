@@ -75,15 +75,18 @@ void smoothBlip(const AnimationParam& param) {
     animations.RestartAnimation(controllers[param.index].nextAnimation);
   }
 
+  uint16_t duration = animations.AnimationDuration(param.index);
+  float progress = (float)((mesh.getNodeTime() / 1000) % duration) / (float)duration;
+
   uint16_t blips = mesh.connectionCount() + 1;
   if (blips > MAX_BLIPS )
     blips = MAX_BLIPS;
 
-  uint8_t hueIdx = (int)(param.progress * blips);
+  uint8_t hueIdx = (int)(progress * blips);
 
   // Lightness has to be calculated before any hueIdx adjustments.
   // Lightness will be stronger in the middle of each period of each color.
-  float lightness = ((param.progress * blips) - hueIdx) * 2;
+  float lightness = ((progress * blips) - hueIdx) * 2;
   if (lightness > 1)
     lightness = 2 - lightness;
   lightness *= controllers[param.index].dimmer;

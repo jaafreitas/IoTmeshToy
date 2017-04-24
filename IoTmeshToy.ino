@@ -86,7 +86,8 @@ void yerpCb( void *arg ) {
   String msg = "Yerp=";
   msg += yerpCount++;
 
-  mesh.debugMsg( APPLICATION, "msg-->%s<-- stationStatus=%u numConnections=%u\n", msg.c_str(), wifi_station_get_connect_status(), mesh.connectionCount( NULL ) );
+  mesh.debugMsg( APPLICATION, "msg-->%s<-- stationStatus=%u numConnections=%u nodeTime=%u\n",
+    msg.c_str(), wifi_station_get_connect_status(), mesh.connectionCount( NULL ), mesh.getNodeTime() );
 
   SimpleList<meshConnectionType>::iterator connection = mesh._connections.begin();
   while ( connection != mesh._connections.end() ) {
