@@ -1,6 +1,6 @@
 #include <NeoPixelBus.h>
 #include <NeoPixelAnimator.h>
-#include <easyMesh.h>
+#include <painlessMesh.h>
 #include <easyWebSocket.h>
 
 #include "animations.h"
@@ -8,7 +8,7 @@
 NeoPixelAnimator animations(ANIMATION_COUNT); // NeoPixel animation management object
 AnimationController controllers[ANIMATION_COUNT];
 
-extern easyMesh mesh;
+extern painlessMesh mesh;
 
 void RGBSetPixelColor(RgbColor color) {
   // Common anode RGB LED.
@@ -78,7 +78,7 @@ void smoothBlip(const AnimationParam& param) {
   uint16_t duration = animations.AnimationDuration(param.index);
   float progress = (float)((mesh.getNodeTime() / 1000) % duration) / (float)duration;
 
-  uint16_t blips = mesh.connectionCount() + 1;
+  uint16_t blips = mesh.getNodeList().size() + 1;
   if (blips > MAX_BLIPS )
     blips = MAX_BLIPS;
 

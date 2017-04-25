@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <ArduinoJson.h>
-#include <easyMesh.h>
+#include <painlessMesh.h>
 #include <easyWebServer.h>
 #include <easyWebSocket.h>
 #include "animations.h"
@@ -10,7 +10,7 @@
 #define   MESH_PORT       5555
 
 // globals
-easyMesh  mesh;  // mesh global
+painlessMesh  mesh;
 extern NeoPixelAnimator animations; // NeoPixel animation management object
 extern AnimationController controllers[]; // array of add-on controllers for my animations
 os_timer_t  yerpTimer;
@@ -32,8 +32,8 @@ void setup() {
 //  mesh.setDebugMsgTypes( ERROR | MESH_STATUS | CONNECTION | SYNC | COMMUNICATION | GENERAL | MSG_TYPES | REMOTE | APPLICATION ); // all types on
   mesh.setDebugMsgTypes( ERROR | STARTUP | APPLICATION );  // set before init() so that you can see startup messages
   mesh.init( MESH_PREFIX, MESH_PASSWORD, MESH_PORT);
-  mesh.setReceiveCallback( &receivedCallback );
-  mesh.setNewConnectionCallback( &newConnectionCallback );
+  mesh.onReceive( &receivedCallback );
+  mesh.onNewConnection( &newConnectionCallback );
 
   // setups webServer
   webServerInit();
@@ -43,7 +43,7 @@ void setup() {
   webSocketSetReceiveCallback( &wsReceiveCallback );
   webSocketSetConnectionCallback( &wsConnectionCallback );
 
-  mesh.debugMsg( STARTUP, "\nIn setup() my chipId=%d\n", mesh.getChipId());
+  mesh.debugMsg( STARTUP, "\nIn setup() my NodeId=%d\n", mesh.getNodeId());
 
   animationsInit();
 
@@ -55,7 +55,7 @@ void loop() {
   mesh.update();
 
   static uint16_t previousConnections;
-  uint16_t numConnections = mesh.connectionCount();
+  uint16_t numConnections = mesh.getNodeList().size();
   if( countWsConnections() > 0 )
     numConnections++;
 
@@ -87,13 +87,7 @@ void yerpCb( void *arg ) {
   msg += yerpCount++;
 
   mesh.debugMsg( APPLICATION, "msg-->%s<-- stationStatus=%u numConnections=%u nodeTime=%u\n",
-    msg.c_str(), wifi_station_get_connect_status(), mesh.connectionCount( NULL ), mesh.getNodeTime() );
-
-  SimpleList<meshConnectionType>::iterator connection = mesh._connections.begin();
-  while ( connection != mesh._connections.end() ) {
-    mesh.debugMsg( APPLICATION, "\tconn#%d, chipId=%d subs=%s\n", connCount++, connection->chipId, connection->subConnections.c_str() );
-    connection++;
-  }
+    msg.c_str(), wifi_station_get_connect_status(), mesh.getNodeList().size(), mesh.getNodeTime() );
 
   // send ping to webSockets
   String ping("ping");
@@ -118,7 +112,7 @@ void receivedCallback( uint32_t from, String &msg ) {
 
   mesh.debugMsg( APPLICATION, "control=%s\n", msg.c_str());
 
-  for ( int i = 0; i < ( mesh.connectionCount( NULL ) + 1 ); i++) {
+  for ( int i = 0; i < ( mesh.getNodeList().size() + 1 ); i++) {
     float hue = control[String(i)];
     controllers[smoothIdx].hue[i] = hue;
   }
@@ -148,7 +142,7 @@ void wsReceiveCallback( char *payloadData ) {
     return;
   }
   
-  uint16_t blips = mesh.connectionCount() + 1;
+  uint16_t blips = mesh.getNodeList().size() + 1;
   if ( blips > MAX_BLIPS )
     blips = MAX_BLIPS;
     
@@ -167,7 +161,7 @@ void sendWsControl( void ) {
 }
 
 String buildControl ( void ) {
-  uint16_t blips = mesh.connectionCount() + 1;
+  uint16_t blips = mesh.getNodeList().size() + 1;
   mesh.debugMsg( APPLICATION, "buildControl(): blips=%d\n", blips);
 
   if ( blips > MAX_BLIPS ) {
