@@ -7,6 +7,10 @@ Any node consists of a ESP8266 with a RGB LED connected to digital pins D1, D2 a
 
 It is possible to change the colors if you connect to the wifi network created by the mesh network. There is a web server running on the router address.
 
+Here is a video of the demo:
+
+https://youtu.be/bqFQZIYITko
+
 This project is based on [demoToy example of the easyMesh library](https://github.com/Coopdis/easyMesh/tree/master/examples/demoToy), which unfortunately doesn't appear to be supported any more. To a better understanding of how it works, see the [demoToy video](https://www.youtube.com/watch?v=hqjOY8YHdlM). The concept are exactly the same.
 
 ## Dependencies
