@@ -95,11 +95,11 @@ void yerpCb( void *arg ) {
   sendWsControl();
 }
 
-void newConnectionCallback( bool adopt ) {
-  if ( adopt == false ) {
-    String control = buildControl();
-    mesh.sendBroadcast( control );
-  }
+void newConnectionCallback( uint32_t nodeId ) {
+  mesh.debugMsg( APPLICATION, "newConnectionCallback():\n");
+  
+  String control = buildControl();
+  mesh.sendBroadcast( control );
 }
 
 void receivedCallback( uint32_t from, String &msg ) {
