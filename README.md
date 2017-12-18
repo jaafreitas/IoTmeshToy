@@ -9,7 +9,7 @@ It is possible to change the colors if you connect to the wifi network created b
 
 Here is a video of the demo:
 
-https://youtu.be/bqFQZIYITko
+[IoTmeshToy](https://youtu.be/bqFQZIYITko)
 
 This project is based on [demoToy example of the easyMesh library](https://github.com/Coopdis/easyMesh/tree/master/examples/demoToy), which unfortunately doesn't appear to be supported any more. To a better understanding of how it works, see the [demoToy video](https://www.youtube.com/watch?v=hqjOY8YHdlM). The concept are exactly the same.
 
