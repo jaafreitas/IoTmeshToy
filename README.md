@@ -1,4 +1,4 @@
-# Introduction to IoTmeshToy
+# Introduction
 The IoTmeshToy is a demonstration of the ESP8266 network capability. It creates a true mesh network, meaning that no-planning, central controller or router is required. Any system of one or more nodes will self-organize into fully functional mesh.
 
 ## How it works
