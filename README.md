@@ -23,4 +23,4 @@ The following library are required for this project:
 - [painlessMesh](https://gitlab.com/BlackEdder/painlessMesh)
 
 ## Uploading files to file system
-If you need instructions on how to upload the files in data directory to the ESP8266, follow the [file system documentation](https://github.com/esp8266/Arduino/blob/master/doc/filesystem.md#uploading-files-to-file-system).
+If you need instructions on how to upload the files on data directory to the ESP8266, follow the [file system documentation](https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html#uploading-files-to-file-system).
