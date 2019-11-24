@@ -1,5 +1,4 @@
-#ifndef   _ANIMATIONS_H_
-#define   _ANIMATIONS_H_
+#pragma once
 
 #include <NeoPixelAnimator.h>
 
@@ -29,6 +28,3 @@ void animationsInit();
 void turnOn(const AnimationParam& param);
 void searchingBlip(const AnimationParam& param);
 void smoothBlip(const AnimationParam& param);
-
-#endif //   _ANIMATIONS_H_
-

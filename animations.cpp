@@ -1,7 +1,6 @@
 #include <NeoPixelBus.h>
 #include <NeoPixelAnimator.h>
-#include <painlessMesh.h>
-#include <easyWebSocket.h>
+#include "src/Painless_Mesh/painlessMesh.h"
 
 #include "animations.h"
 
@@ -97,4 +96,3 @@ void smoothBlip(const AnimationParam& param) {
   RgbColor color = HslColor(controllers[param.index].hue[hueIdx], 1.0f, lightness);
   RGBSetPixelColor(color);
 }
-

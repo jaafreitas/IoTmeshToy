@@ -1,8 +1,7 @@
-#include <Arduino.h>
-#include <ArduinoJson.h>
-#include <painlessMesh.h>
-#include <easyWebServer.h>
-#include <easyWebSocket.h>
+#include "src/Painless_Mesh/painlessMesh.h"
+#include "src/ArduinoJson/ArduinoJson.h"
+#include "src/easyWebServer/easyWebServer.h"
+#include "src/easyWebSocket/easyWebSocket.h"
 #include "animations.h"
 
 #define   MESH_PREFIX     "whateverYouLike"
@@ -16,7 +15,7 @@ extern AnimationController controllers[]; // array of add-on controllers for my 
 os_timer_t  yerpTimer;
 
 void setup() {
-  Serial.begin( 115200 );
+  Serial.begin( 74880 );
 
   // Let's limit the analogWrite range to 255, so RGB values will make more sense.
   analogWriteRange(255);
@@ -179,5 +178,3 @@ String buildControl ( void ) {
   control.printTo(ret);
   return ret;
 }
-
-
