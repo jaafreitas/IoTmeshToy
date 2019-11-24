@@ -4,8 +4,8 @@
 #include "src/easyWebSocket/easyWebSocket.h"
 #include "animations.h"
 
-#define   MESH_PREFIX     "whateverYouLike"
-#define   MESH_PASSWORD   "somethingSneeky"
+#define   MESH_PREFIX     "IoTmeshToy"
+#define   MESH_PASSWORD   "estudiohacker"
 #define   MESH_PORT       5555
 
 // globals
@@ -26,7 +26,7 @@ void setup() {
   digitalWrite(ledPinR, HIGH);
   digitalWrite(ledPinG, HIGH);
   digitalWrite(ledPinB, HIGH);
-
+  
   // setup mesh
 //  mesh.setDebugMsgTypes( ERROR | MESH_STATUS | CONNECTION | SYNC | COMMUNICATION | GENERAL | MSG_TYPES | REMOTE | APPLICATION ); // all types on
   mesh.setDebugMsgTypes( ERROR | STARTUP | APPLICATION );  // set before init() so that you can see startup messages
@@ -169,7 +169,7 @@ String buildControl ( void ) {
   }
 
   StaticJsonBuffer<200> jsonBuffer;
-  JsonObject& control = jsonBuffer.createObject();
+  JsonObject& control = jsonBuffer.createObject();  
   for (int i = 0; i < blips; i++ ) {
     control[String(i)] = String(controllers[smoothIdx].hue[i]);
   }
