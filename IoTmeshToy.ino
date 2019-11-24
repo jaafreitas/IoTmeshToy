@@ -4,8 +4,8 @@
 #include "src/easyWebSocket/easyWebSocket.h"
 #include "animations.h"
 
-#define   MESH_PREFIX     "IoTmeshToy"
-#define   MESH_PASSWORD   "estudiohacker"
+#define   MESH_PREFIX     "whateverYouLike"
+#define   MESH_PASSWORD   "somethingSneeky"
 #define   MESH_PORT       5555
 
 // globals
@@ -26,7 +26,7 @@ void setup() {
   digitalWrite(ledPinR, HIGH);
   digitalWrite(ledPinG, HIGH);
   digitalWrite(ledPinB, HIGH);
-  
+
   // setup mesh
 //  mesh.setDebugMsgTypes( ERROR | MESH_STATUS | CONNECTION | SYNC | COMMUNICATION | GENERAL | MSG_TYPES | REMOTE | APPLICATION ); // all types on
   mesh.setDebugMsgTypes( ERROR | STARTUP | APPLICATION );  // set before init() so that you can see startup messages
@@ -96,7 +96,7 @@ void yerpCb( void *arg ) {
 
 void newConnectionCallback( uint32_t nodeId ) {
   mesh.debugMsg( APPLICATION, "newConnectionCallback():\n");
-  
+
   String control = buildControl();
   mesh.sendBroadcast( control );
 }
@@ -140,11 +140,11 @@ void wsReceiveCallback( char *payloadData ) {
     mesh.debugMsg( APPLICATION, "wsReceiveCallback(): parseObject() failed. payload=%s<--\n", payloadData);
     return;
   }
-  
+
   uint16_t blips = mesh.getNodeList().size() + 1;
   if ( blips > MAX_BLIPS )
     blips = MAX_BLIPS;
-    
+
   for ( int i = 0; i < blips; i++) {
     String temp(i);
     float hue = control[temp];
@@ -154,7 +154,7 @@ void wsReceiveCallback( char *payloadData ) {
 
 void sendWsControl( void ) {
   mesh.debugMsg( APPLICATION, "sendWsControl():\n");
-  
+
   String control = buildControl();
   broadcastWsMessage(control.c_str(), control.length(), OPCODE_TEXT);
 }
@@ -169,7 +169,7 @@ String buildControl ( void ) {
   }
 
   StaticJsonBuffer<200> jsonBuffer;
-  JsonObject& control = jsonBuffer.createObject();  
+  JsonObject& control = jsonBuffer.createObject();
   for (int i = 0; i < blips; i++ ) {
     control[String(i)] = String(controllers[smoothIdx].hue[i]);
   }

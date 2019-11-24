@@ -1,5 +1,0 @@
-* usar telas de notebook com processing lendo dados de NodeMCU gerando alguma interação;
-* sensor de proximidade avisando os demais (consciência coletiva);
-* semáforo consciente onde 4 semáforos iniciam em vermelho e quando algum carro se aproxima, eles negociam qual poderá abrir e em qual ordem;
-* postes de luz que a intensidade da luz diminui ou aumenta conforme a quantidade de postes presentes;
-* demonstração da topologia de uma rede mesh onde definimos uma cor de LED única para cada um dos NodeMCUs de forma que cada um deles acenda LEDs conforme a cor dos LEDS definidos em cada um dos NodeMCUs que ele está conectado.
